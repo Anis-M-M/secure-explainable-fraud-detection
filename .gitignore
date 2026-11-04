@@ -1,0 +1,57 @@
+# ── Dataset (too large for repo — see README for download link) ──────────────
+data/
+*.csv
+
+# ── Python environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ── Pre-trained model binaries ───────────────────────────────────────────────
+ml-service/models/saved/*.pkl
+ml-service/models/saved/nn_model/
+*.h5
+*.keras
+
+# ── Generated plot outputs ───────────────────────────────────────────────────
+outputs/
+*.png
+*.jpg
+
+# ── Java build artifacts & local Maven cache ─────────────────────────────────
+.m2/
+target/
+*.jar
+*.war
+*.class
+
+# ── Node / frontend dependencies ─────────────────────────────────────────────
+node_modules/
+dist/
+.next/
+build/
+
+# ── IDE & OS files ───────────────────────────────────────────────────────────
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+
+# ── Secrets ──────────────────────────────────────────────────────────────────
+.env
+*.key
+*.pem
+
+# ── Local tooling, notebook checkpoints & coursework files ───────────────────
+.ipynb_checkpoints/
+.vscode/
+.github/java-upgrade/
+.github/modernize/
+QUICK_REFERENCE.txt
+LAUNCH_NOTEBOOK.bat
+*.docx

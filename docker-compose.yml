@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: fraud-detection-db
+    environment:
+      POSTGRES_DB: fraud_detection_db
+      POSTGRES_USER: fraud_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fraud_user -d fraud_detection_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fraud-net
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: fraud-detection-ml
+    environment:
+      REST_PORT: 8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./ml-service/src:/app/src
+      - ml_models:/app/models/saved
+    networks:
+      - fraud-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  api:
+    build:
+      context: ./fraud-detection-api
+      dockerfile: Dockerfile
+    container_name: fraud-detection-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fraud_detection_db
+      SPRING_DATASOURCE_USERNAME: fraud_user
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      ML_SERVICE_URL: http://ml-service:8001
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ml-service:
+        condition: service_healthy
+    networks:
+      - fraud-net
+
+  frontend:
+    build:
+      context: ./fraud-detection-frontend
+      dockerfile: Dockerfile
+    container_name: fraud-detection-frontend
+    environment:
+      VITE_API_URL: http://localhost:8080/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - fraud-net
+
+volumes:
+  postgres_data:
+  ml_models:
+
+networks:
+  fraud-net:
+    driver: bridge

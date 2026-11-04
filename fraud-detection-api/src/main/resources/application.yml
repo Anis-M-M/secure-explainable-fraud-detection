@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: fraud-detection-api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fraud_detection_db
+    username: fraud_user
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+    show-sql: false
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: 86400000
+
+  mvc:
+    pathmatch:
+      use-suffix-pattern: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+ml:
+  service:
+    url: ${ML_SERVICE_URL:http://localhost:8001}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  info:
+    title: Fraud Detection API
+    description: Secure & Explainable Fraud Detection System
+    version: 1.0.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO
+    com.frauddetection: DEBUG
+    org.springframework.security: INFO
+
+app:
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    email: ${ADMIN_EMAIL:admin@example.com}
+    password: ${ADMIN_PASSWORD:}

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fraud_detection_db
+    username: fraud_user
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    com.frauddetection: DEBUG
+    org.springframework.security: DEBUG
