@@ -1,4 +1,4 @@
-# Fraud Detection System — MSc Practicum
+# Fraud Detection System - MSc Practicum
 
 **Students:** Anis Mohammed Metkari · Sharwari Rajendra Nimbalkar  
 **Supervisor:** Irina Tal  
