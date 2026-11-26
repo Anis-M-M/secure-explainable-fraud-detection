@@ -2,13 +2,13 @@
 
 **Students:** Anis Mohammed Metkari · Sharwari Rajendra Nimbalkar  
 **Supervisor:** Irina Tal  
-**Programme:** MSc in Computing — Dublin City University
+**Programme:** MSc in Computing - Dublin City University
 
 ---
 
 ## About the Project
 
-This project implements a fraud detection system that compares four detection approaches — a rule-based system, Logistic Regression, XGBoost, and a Neural Network — against the Kaggle credit card fraud dataset. The second part looks at how well SHAP and LIME explain the model decisions, and whether those explanations are stable under small input changes.
+This project implements a fraud detection system that compares four detection approaches - a rule-based system, Logistic Regression, XGBoost, and a Neural Network - against the Kaggle credit card fraud dataset. The second part looks at how well SHAP and LIME explain the model decisions, and whether those explanations are stable under small input changes.
 
 **RQ1:** How do rule-based, LR, XGBoost and Neural Network models compare on highly imbalanced fraud data?  
 **RQ2:** How do SHAP and LIME differ in stability and consistency across models?
